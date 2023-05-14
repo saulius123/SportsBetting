@@ -30,24 +30,30 @@ namespace SportsBetting.Controllers
             //var result = await _eventRepository.GetPaged(pageIndex, pageSize, sortOrder);
             //return Ok(new { items = result.Items, totalItems = result.TotalItems });
 
-            // Generate a key for caching
+            //generate a key for caching
             string cacheKey = $"PagedEvents:page={pageIndex}:pageSize={pageSize}:sortOrder={sortOrder}";
 
-            // Try to get the result from cache
-            var cachedResult = _cache.StringGet(cacheKey);
-            if (cachedResult.HasValue)
+            //generate a tag for the cached items
+            string cacheTag = "PagedEvents";
+
+            //try to get the result from cache
+            var cachedResult = await _cache.StringGetAsync(cacheKey);
+            if (!cachedResult.IsNull)
             {
-                // If the result is in the cache, deserialize it and return
+                //if the result is in the cache, deserialize it and return
                 var result = JsonConvert.DeserializeObject<PagedResultDto<Event>>(cachedResult);
                 return Ok(new { items = result.Items, totalItems = result.TotalItems });
             }
             else
             {
-                // If the result is not in the cache, get it from the repository
+                //if the result is not in the cache, get it from the repository
                 var result = await _eventRepository.GetPaged(pageIndex, pageSize, sortOrder);
 
-                // Store the result in the cache for future requests
-                _cache.StringSet(cacheKey, JsonConvert.SerializeObject(result), TimeSpan.FromMinutes(5));
+                //store the result in the cache with the specified tag
+                await _cache.StringSetAsync(cacheKey, JsonConvert.SerializeObject(result), expiry: TimeSpan.FromMinutes(5));
+
+                //associate the cache key with the tag
+                await _cache.SetAddAsync(cacheTag, cacheKey);
 
                 return Ok(new { items = result.Items, totalItems = result.TotalItems });
             }
@@ -71,15 +77,17 @@ namespace SportsBetting.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event Event)
         {
-            //get all keys that start with the "PagedEvents" pattern
-            var server = _cache.Multiplexer.GetServer(_cache.Multiplexer.GetEndPoints().First());
-            var keys = server.Keys(pattern: "PagedEvents*");
+            //get all keys associated with the "PagedEvents" tag
+            var cacheKeys = _cache.SetMembers("PagedEvents");
 
             //delete each key
-            foreach (var key in keys)
+            foreach (var key in cacheKeys)
             {
-                _cache.KeyDelete(key);
+                _cache.KeyDelete(key.ToString());
             }
+
+            //delete the set of keys associated with the "PagedEvents" tag
+            _cache.KeyDelete("PagedEvents");
 
             await _eventRepository.CreateAsync(Event);
             await _eventRepository.SaveChangesAsync();
