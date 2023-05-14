@@ -1,5 +1,7 @@
 ﻿using Confluent.Kafka;
 using KafkaProducer.Services.Interfaces;
+using StackExchange.Redis;
+using System.Net;
 
 namespace Kafkaproducer.Services
 {
