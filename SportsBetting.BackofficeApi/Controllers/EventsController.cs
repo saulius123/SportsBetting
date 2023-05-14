@@ -71,6 +71,16 @@ namespace SportsBetting.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event Event)
         {
+            //get all keys that start with the "PagedEvents" pattern
+            var server = _cache.Multiplexer.GetServer(_cache.Multiplexer.GetEndPoints().First());
+            var keys = server.Keys(pattern: "PagedEvents*");
+
+            //delete each key
+            foreach (var key in keys)
+            {
+                _cache.KeyDelete(key);
+            }
+
             await _eventRepository.CreateAsync(Event);
             await _eventRepository.SaveChangesAsync();
 

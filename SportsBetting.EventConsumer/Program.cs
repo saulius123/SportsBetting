@@ -62,8 +62,7 @@ namespace KafkaConsumer
             var connectionString = configuration.GetConnectionString("Database");
 
             services.AddDbContext<SportsBettingContext>(options =>
-                options.UseSqlServer(connectionString)
-                .LogTo(Console.WriteLine));
+                options.UseSqlServer(connectionString));
 
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();

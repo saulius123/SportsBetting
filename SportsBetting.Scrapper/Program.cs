@@ -66,7 +66,7 @@ namespace KafkaProducer
                 if (!db.KeyExists(eventKey))
                 {
                     // Store the event in Redis
-                    db.StringSet(eventKey, JsonConvert.SerializeObject(eventItem));
+                    db.StringSet(eventKey, "");
 
                     // Send the message
                     string message = JsonConvert.SerializeObject(eventItem);

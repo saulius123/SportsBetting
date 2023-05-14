@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SportsBetting.BackofficeApi.DTO
+﻿namespace SportsBetting.BackofficeApi.DTO
 {
     public class PagedResultDto<T>
     {
