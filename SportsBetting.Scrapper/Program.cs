@@ -55,8 +55,9 @@ namespace KafkaProducer
             {
                 return false;
             }
-
             
+            var transaction = db.CreateTransaction();
+
             int eventCount = 0;
             foreach (EventDTO eventItem in events)
             {
@@ -65,15 +66,17 @@ namespace KafkaProducer
                 // Check if the event already exists in Redis
                 if (!db.KeyExists(eventKey))
                 {
-                    // Store the event in Redis
-                    db.StringSet(eventKey, "");
-
                     // Send the message
                     string message = JsonConvert.SerializeObject(eventItem);
                     await messageSender.SendMessageAsync(topic, message);
+
+                    await transaction.StringSetAsync(eventKey, "");
+
                     eventCount++;
                 }
             }
+
+            await transaction.ExecuteAsync();
 
             return true;
         }
