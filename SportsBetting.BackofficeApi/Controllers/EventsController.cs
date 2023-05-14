@@ -33,7 +33,7 @@ namespace SportsBetting.Controllers
             //generate a key for caching
             string cacheKey = $"PagedEvents:page={pageIndex}:pageSize={pageSize}:sortOrder={sortOrder}";
 
-            //generate a tag for the cached items
+            //a tag for the cached items
             string cacheTag = "PagedEvents";
 
             //try to get the result from cache
