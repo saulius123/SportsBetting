@@ -70,7 +70,7 @@ namespace KafkaProducer
                     string message = JsonConvert.SerializeObject(eventItem);
                     await messageSender.SendMessageAsync(topic, message);
 
-                    await transaction.StringSetAsync(eventKey, "");
+                    transaction.StringSetAsync(eventKey, "");
 
                     eventCount++;
                 }
