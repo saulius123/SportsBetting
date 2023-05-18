@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
-using StackExchange.Redis;
-using Newtonsoft.Json;
-using SportsBetting.Services.DTOs;
 
 namespace SportsBetting.Controllers
 {
@@ -15,42 +12,18 @@ namespace SportsBetting.Controllers
 
         private readonly ITeamRepository _teamRepository;
 
-        private readonly IDatabase _cache;
-        public EventsController(IEventRepository eventRepository, ITeamRepository teamRepository, IConnectionMultiplexer redis)
+        public EventsController(IEventRepository eventRepository, ITeamRepository teamRepository)
         {
             _eventRepository = eventRepository;
             _teamRepository = teamRepository;
-            _cache = redis.GetDatabase();
         }
 
         // GET: api/Events
         [HttpGet]
         public async Task<ActionResult> GetEvents(int pageIndex = 1, int pageSize = 20, string? sortOrder = null)
         {
-            //var result = await _eventRepository.GetPaged(pageIndex, pageSize, sortOrder);
-            //return Ok(new { items = result.Items, totalItems = result.TotalItems });
-
-            // Generate a key for caching
-            string cacheKey = $"PagedEvents:page={pageIndex}:pageSize={pageSize}:sortOrder={sortOrder}";
-
-            // Try to get the result from cache
-            var cachedResult = _cache.StringGet(cacheKey);
-            if (cachedResult.HasValue)
-            {
-                // If the result is in the cache, deserialize it and return
-                var result = JsonConvert.DeserializeObject<PagedResultDto<Event>>(cachedResult);
-                return Ok(new { items = result.Items, totalItems = result.TotalItems });
-            }
-            else
-            {
-                // If the result is not in the cache, get it from the repository
-                var result = await _eventRepository.GetPaged(pageIndex, pageSize, sortOrder);
-
-                // Store the result in the cache for future requests
-                _cache.StringSet(cacheKey, JsonConvert.SerializeObject(result), TimeSpan.FromMinutes(5));
-
-                return Ok(new { items = result.Items, totalItems = result.TotalItems });
-            }
+            var result = await _eventRepository.GetPaged(pageIndex, pageSize, sortOrder);
+            return Ok(new { items = result.Items, totalItems = result.TotalItems });
         }
 
         // GET: api/Events/5
@@ -71,16 +44,6 @@ namespace SportsBetting.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event Event)
         {
-            //get all keys that start with the "PagedEvents" pattern
-            var server = _cache.Multiplexer.GetServer(_cache.Multiplexer.GetEndPoints().First());
-            var keys = server.Keys(pattern: "PagedEvents*");
-
-            //delete each key
-            foreach (var key in keys)
-            {
-                _cache.KeyDelete(key);
-            }
-
             await _eventRepository.CreateAsync(Event);
             await _eventRepository.SaveChangesAsync();
 

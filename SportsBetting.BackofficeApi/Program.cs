@@ -4,7 +4,6 @@ using SportsBetting.Data.Repositories.Interfaces;
 using SportsBetting.Data.Repositories;
 using SportsBetting.Services.Services.Interfaces;
 using SportsBetting.Services.Services;
-using StackExchange.Redis;
 
 public class Program
 {
@@ -25,8 +24,6 @@ public class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
-        builder.Services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(builder.Configuration["Redis:ConnectionString"]));
 
         var app = builder.Build();
 
