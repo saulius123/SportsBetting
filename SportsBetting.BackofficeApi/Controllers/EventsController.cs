@@ -3,7 +3,7 @@ using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
 using StackExchange.Redis;
 using Newtonsoft.Json;
-using SportsBetting.BackofficeApi.DTO;
+using SportsBetting.Services.DTOs;
 
 namespace SportsBetting.Controllers
 {

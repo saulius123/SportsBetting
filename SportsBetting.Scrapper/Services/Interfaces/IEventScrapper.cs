@@ -1,9 +1,9 @@
-﻿using Kafkaproducer.DTO;
+﻿using SportsBetting.Scrapper.DTOs;
 
-namespace KafkaProducer.Services.Interfaces
+namespace SportsBetting.Scrapper.Services.Interfaces
 {
     public interface IEventScrapper
     {
-        Task<List<EventDTO>> GetEvents();
+        Task<List<KafkaEventDto>> GetEvents();
     }
 }

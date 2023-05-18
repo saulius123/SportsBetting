@@ -1,8 +1,9 @@
 ﻿using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
-using KafkaConsumer.Services.Interfaces;
+using SportsBetting.Services.DTOs;
+using SportsBetting.Services.Services.Interfaces;
 
-namespace KafkaConsumer.Services
+namespace SportsBetting.Services.Services
 {
     public class EventService : IEventService
     {
@@ -18,7 +19,7 @@ namespace KafkaConsumer.Services
             _leagueRepository = leagueRepository;
             _sportRepository = sportRepository;
         }
-        public async Task<Event> CreateIfNotExistsAsync(EventDTO eventDTO)
+        public async Task<Event> CreateIfNotExistsAsync(KafkaEventDto eventDTO)
         {
             int sportId = await GetOrCreateSportIdAsync(eventDTO.Sport);
             int leagueId = await GetOrCreateLeagueIdAsync(eventDTO.League, sportId);

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SportsBetting.Data\SportsBetting.Data.csproj" />
+    <ProjectReference Include="..\SportsBetting.Services\SportsBetting.Services.csproj" />
   </ItemGroup>
 
 </Project>

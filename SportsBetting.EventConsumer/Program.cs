@@ -1,15 +1,15 @@
 ﻿using Confluent.Kafka;
-using KafkaConsumer.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
 using SportsBetting.Data.Repositories;
-using KafkaConsumer.Services.Interfaces;
+using SportsBetting.Services.Services;
+using SportsBetting.Services.Services.Interfaces;
 using Serilog;
 
-namespace KafkaConsumer
+namespace SportsBetting.EventConsumer
 {
     class Program
     {

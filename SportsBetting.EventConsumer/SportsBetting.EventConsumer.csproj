@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="2.1.0" />
+    <PackageReference Include="Confluent.Kafka" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SportsBetting.Data\SportsBetting.Data.csproj" />
+    <ProjectReference Include="..\SportsBetting.Services\SportsBetting.Services.csproj" />
   </ItemGroup>
 
 </Project>

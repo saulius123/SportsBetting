@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
 using SportsBetting.Data.Repositories;
-using SportsBetting.Services.Interfaces;
-using SportsBetting.Services;
+using SportsBetting.Services.Services.Interfaces;
+using SportsBetting.Services.Services;
 using StackExchange.Redis;
 
 public class Program

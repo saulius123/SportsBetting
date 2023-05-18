@@ -1,13 +1,13 @@
-﻿using Kafkaproducer.DTO;
-using KafkaProducer.Services.Interfaces;
+﻿using SportsBetting.Scrapper.DTOs;
+using SportsBetting.Scrapper.Services.Interfaces;
 using PuppeteerSharp;
 using System.Globalization;
 
-namespace Kafkaproducer.Services
+namespace SportsBetting.Scrapper.Services
 {
     internal class BasketNewsScrapper : IEventScrapper
     {
-        public async Task<List<EventDTO>> GetEvents()
+        public async Task<List<KafkaEventDto>> GetEvents()
         {
             await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
             var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
@@ -15,7 +15,7 @@ namespace Kafkaproducer.Services
             await page.GoToAsync("https://www.basketnews.lt/rungtynes/tvarkarastis/viskas.html");
 
             var eventDivs = await page.QuerySelectorAllAsync("table .body_row");
-            var events = new List<EventDTO>();
+            var events = new List<KafkaEventDto>();
             var date = new DateTime();
             foreach (var eventDiv in eventDivs)
             {
@@ -45,7 +45,7 @@ namespace Kafkaproducer.Services
 
                 var league = (await page.EvaluateFunctionAsync<string>("el => el.textContent", leagueEl)).Trim();
 
-                events.Add(new EventDTO(team2, team1, startDate, endDate, league, "basketball"));
+                events.Add(new KafkaEventDto(team2, team1, startDate, endDate, league, "basketball"));
             }
 
             return events;

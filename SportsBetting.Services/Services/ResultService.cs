@@ -1,9 +1,8 @@
 ﻿using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
-using SportsBetting.Services.Interfaces;
-using System.Threading.Tasks;
+using SportsBetting.Services.Services.Interfaces;
 
-namespace SportsBetting.Services
+namespace SportsBetting.Services.Services
 {
     public class ResultService : IResultService
     {

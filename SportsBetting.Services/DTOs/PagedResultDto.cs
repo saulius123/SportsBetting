@@ -1,4 +1,4 @@
-﻿namespace SportsBetting.BackofficeApi.DTO
+﻿namespace SportsBetting.Services.DTOs
 {
     public class PagedResultDto<T>
     {

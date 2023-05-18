@@ -1,11 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading;
+﻿using System.ComponentModel.DataAnnotations;
 using Confluent.Kafka;
-using KafkaConsumer.Services.Interfaces;
+using SportsBetting.Services.Services.Interfaces;
 using Newtonsoft.Json;
+using SportsBetting.Services.DTOs;
 
-namespace KafkaConsumer.Services
+namespace SportsBetting.Services.Services
 {
     public class ConsumerService
     {
@@ -31,8 +30,8 @@ namespace KafkaConsumer.Services
                     var cr = _consumer.Consume(cancellationToken);
                     Console.WriteLine($"Consumed message '{cr.Message.Value}' at: '{cr.TopicPartitionOffset}'.");
 
-                    var eventDto = JsonConvert.DeserializeObject<EventDTO>(cr.Message.Value);
-                    Console.WriteLine($"g");
+                    var eventDto = JsonConvert.DeserializeObject<KafkaEventDto>(cr.Message.Value);
+                    
                     if (ValidateEventDTO(eventDto, out var validationResults))
                     {
                         await _eventService.CreateIfNotExistsAsync(eventDto);
@@ -59,7 +58,7 @@ namespace KafkaConsumer.Services
             _consumer.Close();
         }
 
-        private bool ValidateEventDTO(EventDTO eventDto, out ICollection<ValidationResult> validationResults)
+        private bool ValidateEventDTO(KafkaEventDto eventDto, out ICollection<ValidationResult> validationResults)
         {
             validationResults = new List<ValidationResult>();
             var validationContext = new ValidationContext(eventDto);

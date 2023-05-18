@@ -1,12 +1,12 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Kafkaproducer.DTO;
-using Kafkaproducer.Services;
-using KafkaProducer.Services.Interfaces;
+using SportsBetting.Scrapper.DTOs;
+using SportsBetting.Scrapper.Services;
+using SportsBetting.Scrapper.Services.Interfaces;
 using StackExchange.Redis;
 
-namespace KafkaProducer
+namespace SportsBetting.Scrapper
 {
     class Program
     {
@@ -46,7 +46,7 @@ namespace KafkaProducer
             }
         }
 
-        private static async Task<bool> ProcessAndSendEvents(IEnumerable<EventDTO> events, IMessageSender messageSender, string topic, IDatabase db)
+        private static async Task<bool> ProcessAndSendEvents(IEnumerable<KafkaEventDto> events, IMessageSender messageSender, string topic, IDatabase db)
         {
             Console.WriteLine("Press Enter key to run the BasketNews scrapper");
             while (Console.ReadKey().Key != ConsoleKey.Enter) { }
@@ -58,7 +58,7 @@ namespace KafkaProducer
 
             
             int eventCount = 0;
-            foreach (EventDTO eventItem in events)
+            foreach (KafkaEventDto eventItem in events)
             {
                 string eventKey = $"scrappedEvent:{eventItem.Team1}:{eventItem.League}:{eventItem.StartDateTime}";
 

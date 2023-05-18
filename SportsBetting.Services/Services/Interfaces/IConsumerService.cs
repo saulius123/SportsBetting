@@ -1,4 +1,4 @@
-﻿namespace SportsBetting.EventConsumer.Services.Interfaces
+﻿namespace SportsBetting.Services.Services.Interfaces
 {
     public interface IConsumerService
     {

@@ -1,7 +1,6 @@
 ﻿using SportsBetting.Data.Models;
-using System.Threading.Tasks;
 
-namespace SportsBetting.Services.Interfaces
+namespace SportsBetting.Services.Services.Interfaces
 {
     public interface IResultService
     {

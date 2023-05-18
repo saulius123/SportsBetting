@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
-using SportsBetting.Services.Interfaces;
+using SportsBetting.Services.Services.Interfaces;
 
 namespace SportsBetting.Controllers
 {

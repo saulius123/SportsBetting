@@ -1,4 +1,4 @@
-﻿namespace KafkaProducer.Services.Interfaces
+﻿namespace SportsBetting.Scrapper.Services.Interfaces
 {
     public interface IMessageSender
     {

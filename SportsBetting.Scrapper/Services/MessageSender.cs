@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
-using KafkaProducer.Services.Interfaces;
+using SportsBetting.Scrapper.Services.Interfaces;
 
-namespace Kafkaproducer.Services
+namespace SportsBetting.Scrapper.Services
 {
     internal class MessageSender : IMessageSender
     {
