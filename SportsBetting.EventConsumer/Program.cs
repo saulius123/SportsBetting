@@ -68,7 +68,7 @@ namespace SportsBetting.EventConsumer
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<ILeagueRepository, LeagueRepository>();
             services.AddScoped<ISportRepository, SportRepository>();
-            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IKafkaEventService, KafkaEventService>();
             services.AddScoped<ConsumerService>();
         }
     }

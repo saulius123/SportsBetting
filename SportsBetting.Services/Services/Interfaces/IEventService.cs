@@ -1,10 +1,14 @@
-﻿using SportsBetting.Data.Models;
-using SportsBetting.Services.DTOs;
+﻿using SportsBetting.Services.DTOs;
+using SportsBetting.Data.Models;
 
 namespace SportsBetting.Services.Services.Interfaces
 {
-    public interface IEventService
+    interface IEventService
     {
-        Task<Event> CreateIfNotExistsAsync(KafkaEventDto eventDto);
+        Task<PagedResultDto<Event>> GetPagedEventsAsync(int pageIndex, int pageSize, string sortOrder);
+        Task<Event> GetEventByIdAsync(int id);
+        Task CreateEventAsync(Event eventItem);
+        Task UpdateEventAsync(Event eventToUpdate);
+        Task DeleteEventAsync(Event eventToDelete);
     }
 }

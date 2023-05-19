@@ -10,9 +10,9 @@ namespace SportsBetting.Services.Services
     {
         private readonly ConsumerConfig _config;
         private readonly IConsumer<Ignore, string> _consumer;
-        private readonly IEventService _eventService;
+        private readonly IKafkaEventService _eventService;
 
-        public ConsumerService(ConsumerConfig config, IEventService eventService)
+        public ConsumerService(ConsumerConfig config, IKafkaEventService eventService)
         {
             _config = config;
             _eventService = eventService;
