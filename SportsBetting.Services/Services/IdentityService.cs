@@ -18,7 +18,7 @@ public class IdentityService : IIdentityService
         _config = config;
     }
 
-    public async Task<string> Login(string username, string password)
+    public async Task<string?> Login(string username, string password)
     {
         var user = await _userRepository.GetUser(username);
 
