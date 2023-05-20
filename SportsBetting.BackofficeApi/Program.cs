@@ -19,6 +19,7 @@ public class Program
         builder.Services.AddScoped<IEventRepository, EventRepository>();
         builder.Services.AddScoped<ITeamRepository, TeamRepository>();
         builder.Services.AddScoped<IBetOfferRepository, BetOfferRepository>();
+        builder.Services.AddScoped<IBetOfferService, BetOfferService>();
         builder.Services.AddScoped<IResultService, ResultService>();
         builder.Services.AddScoped<IResultRepository, ResultRepository>();
 

@@ -1,9 +1,10 @@
 ﻿using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
+using SportsBetting.Services.Services.Interfaces;
 
 namespace SportsBetting.Services.Services
 {
-    internal class BetOfferService
+    public class BetOfferService : IBetOfferService
     {
         private readonly IBetOfferRepository _betOfferRepository;
 
