@@ -97,7 +97,7 @@ public partial class SportsBettingContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Username)
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });

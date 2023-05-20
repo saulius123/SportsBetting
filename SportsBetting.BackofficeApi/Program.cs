@@ -22,6 +22,8 @@ public class Program
         builder.Services.AddScoped<IBetOfferService, BetOfferService>();
         builder.Services.AddScoped<IResultService, ResultService>();
         builder.Services.AddScoped<IResultRepository, ResultRepository>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
