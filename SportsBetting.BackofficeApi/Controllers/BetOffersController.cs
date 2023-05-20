@@ -1,39 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
+using SportsBetting.Services.Services.Interfaces;
 namespace SportsBetting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class BetOffersController : ControllerBase
     {
-        private readonly IBetOfferRepository _BetOfferRepository;
+        private readonly IBetOfferService _betOfferService;
 
         private readonly ITeamRepository _teamRepository;
-        public BetOffersController(IBetOfferRepository BetOfferRepository, ITeamRepository teamRepository)
+        public BetOffersController(IBetOfferService betOfferService)
         {
-            _BetOfferRepository = BetOfferRepository;
-          
+            _betOfferService = betOfferService;
         }
 
         // GET: api/BetOffers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BetOffer>>> GetBetOffers()
         {
-            return await _BetOfferRepository.Get();
+            var betOffers = await _betOfferService.GetAllAsync();
+            return Ok(betOffers);
         }
 
         // GET: api/BetOffers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BetOffer>> GetBetOffer(int id)
         {
-            BetOffer? BetOffer = await _BetOfferRepository.GetById(id);
-            if (BetOffer == null)
+            var betOffer = await _betOfferService.GetByIdAsync(id);
+            if (betOffer == null)
             {
                 return NotFound();
             }
 
-            return BetOffer;
+            return Ok(betOffer);
 
         }
 
@@ -41,32 +42,15 @@ namespace SportsBetting.Controllers
         [HttpPost]
         public async Task<ActionResult<BetOffer>> PostBetOffer(BetOffer BetOffer)
         {
-            await _BetOfferRepository.CreateAsync(BetOffer);
-            await _BetOfferRepository.SaveChangesAsync();
-
-            return CreatedAtAction("GetBetOffer", new { id = BetOffer.Id }, BetOffer);
+            var createdBetOffer = await _betOfferService.CreateAsync(BetOffer);
+            return CreatedAtAction(nameof(GetBetOffer), new { id = createdBetOffer.Id }, createdBetOffer);
         }
 
         // PUT: api/BetOffers/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBetOffer(int id, BetOffer updatedBetOffer)
         {
-            if (id != updatedBetOffer.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingBetOffer = await _BetOfferRepository.GetById(id);
-            if (existingBetOffer == null)
-            {
-                return NotFound();
-            }
-
-            existingBetOffer.TypeId= updatedBetOffer.TypeId;
-            existingBetOffer.Odd = updatedBetOffer.Odd;
-
-            await _BetOfferRepository.SaveChangesAsync();
-
+            await _betOfferService.UpdateAsync(id, updatedBetOffer);
             return NoContent();
         }
 
@@ -74,15 +58,7 @@ namespace SportsBetting.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBetOffer(int id)
         {
-            var BetOffer = await _BetOfferRepository.GetById(id);
-            if (BetOffer == null)
-            {
-                return NotFound();
-            }
-
-            await _BetOfferRepository.RemoveAsync(BetOffer);
-            await _BetOfferRepository.SaveChangesAsync();
-
+            await _betOfferService.DeleteAsync(id);
             return NoContent();
         }
     }
