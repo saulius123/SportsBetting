@@ -19,7 +19,6 @@ namespace SportsBetting.Controllers
         // GET: api/Events
         
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetEvents(int pageIndex = 1, int pageSize = 20, string sortOrder = null)
         {
             var result = await _eventService.GetPagedEventsAsync(pageIndex, pageSize, sortOrder);
