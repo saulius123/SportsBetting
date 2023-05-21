@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
 using SportsBetting.Services.Services.Interfaces;
 
@@ -23,7 +22,6 @@ namespace SportsBetting.Controllers
         [HttpPost]
         public async Task<ActionResult<Result>> PostResult(Result result)
         {
-            _logger.LogInformation("Testing logger");
             try
             {
                 await _resultService.CreateResultAsync(result);
@@ -32,6 +30,8 @@ namespace SportsBetting.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
+            _logger.LogInformation($"Manual update for result: {System.Text.Json.JsonSerializer.Serialize(result)}");
 
             return CreatedAtAction("GetResult", new { id = result.Id }, result);
         }
