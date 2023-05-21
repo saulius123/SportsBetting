@@ -7,6 +7,7 @@ namespace SportsBetting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EventsController : ControllerBase
     {
         private readonly IEventService _eventService;
