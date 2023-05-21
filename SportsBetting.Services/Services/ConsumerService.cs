@@ -3,6 +3,7 @@ using Confluent.Kafka;
 using SportsBetting.Services.Services.Interfaces;
 using Newtonsoft.Json;
 using SportsBetting.Services.DTOs;
+using Microsoft.Extensions.Logging;
 
 namespace SportsBetting.Services.Services
 {
@@ -11,12 +12,14 @@ namespace SportsBetting.Services.Services
         private readonly ConsumerConfig _config;
         private readonly IConsumer<Ignore, string> _consumer;
         private readonly IKafkaEventService _eventService;
+        private readonly ILogger<ConsumerService> _logger;
 
-        public ConsumerService(ConsumerConfig config, IKafkaEventService eventService)
+        public ConsumerService(ConsumerConfig config, IKafkaEventService eventService, ILogger<ConsumerService> logger)
         {
             _config = config;
             _eventService = eventService;
             _consumer = new ConsumerBuilder<Ignore, string>(_config).Build();
+            _logger = logger;
         }
 
         public async Task ConsumeMessagesAsync(CancellationToken cancellationToken)
@@ -27,8 +30,9 @@ namespace SportsBetting.Services.Services
             {
                 try
                 {
+                    _logger.LogInformation($"starts");
                     var cr = _consumer.Consume(cancellationToken);
-                    Console.WriteLine($"Consumed message '{cr.Message.Value}' at: '{cr.TopicPartitionOffset}'.");
+                    _logger.LogInformation($"Consumed message '{cr.Message.Value}' at: '{cr.TopicPartitionOffset}'.");
 
                     var eventDto = JsonConvert.DeserializeObject<KafkaEventDto>(cr.Message.Value);
                     
@@ -38,20 +42,20 @@ namespace SportsBetting.Services.Services
                     }
                     else
                     {
-                        Console.WriteLine("Invalid message structure:");
+                        _logger.LogInformation("Invalid message structure:");
                         foreach (var validationResult in validationResults)
                         {
-                            Console.WriteLine($"- {validationResult.ErrorMessage}");
+                            _logger.LogInformation($"- {validationResult.ErrorMessage}");
                         }
                     }
                 }
                 catch (ConsumeException e)
                 {
-                    Console.WriteLine($"Error occurred: {e.Error.Reason}");
+                    _logger.LogInformation($"Error occurred: {e.Error.Reason}");
                 }
                 catch (JsonSerializationException e)
                 {
-                    Console.WriteLine($"Error deserializing JSON message: {e.Message}");
+                    _logger.LogInformation($"Error deserializing JSON message: {e.Message}");
                 }
             }
 

@@ -21,22 +21,11 @@ namespace SportsBetting.EventConsumer
                 .Build();
 
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
+                .WriteTo.File("Logs/log-.json", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
-
-            try
-            {
-                Log.Information("Starting up");
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Application start-up failed");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
 
             var services = new ServiceCollection();
             
