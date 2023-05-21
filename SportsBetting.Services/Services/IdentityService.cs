@@ -51,7 +51,7 @@ public class IdentityService : IIdentityService
     private string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
+        var key = Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -60,7 +60,7 @@ public class IdentityService : IIdentityService
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
             }),
-            Expires = DateTime.Now.AddDays(10),
+            Expires = DateTime.UtcNow.AddDays(10),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 

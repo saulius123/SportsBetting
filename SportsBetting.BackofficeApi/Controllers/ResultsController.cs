@@ -5,7 +5,6 @@ using SportsBetting.Services.Services.Interfaces;
 
 namespace SportsBetting.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ResultsController : ControllerBase

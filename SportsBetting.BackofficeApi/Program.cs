@@ -32,17 +32,18 @@ public class Program
         builder.Services.AddScoped<IIdentityService, IdentityService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+        //Add Authentication
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            });
+        });
 
 
         builder.Services.AddEndpointsApiExplorer();
