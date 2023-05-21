@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
 using SportsBetting.Services.Services.Interfaces;
 
@@ -8,15 +9,17 @@ namespace SportsBetting.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly EventService _eventService;
+        private readonly IEventService _eventService;
 
-        public EventsController(EventService eventService)
+        public EventsController(IEventService eventService)
         {
-            _eventService = eventService ?? throw new ArgumentNullException(nameof(eventService));
+            _eventService = eventService;
         }
 
         // GET: api/Events
+        
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetEvents(int pageIndex = 1, int pageSize = 20, string sortOrder = null)
         {
             var result = await _eventService.GetPagedEventsAsync(pageIndex, pageSize, sortOrder);

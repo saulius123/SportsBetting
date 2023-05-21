@@ -3,7 +3,7 @@ using SportsBetting.Data.Models;
 
 namespace SportsBetting.Services.Services.Interfaces
 {
-    interface IEventService
+    public interface IEventService
     {
         Task<PagedResultDto<Event>> GetPagedEventsAsync(int pageIndex, int pageSize, string sortOrder);
         Task<Event> GetEventByIdAsync(int id);
