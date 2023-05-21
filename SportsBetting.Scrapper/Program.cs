@@ -65,13 +65,13 @@ namespace SportsBetting.Scrapper
                 // Check if the event already exists in Redis
                 if (!db.KeyExists(eventKey))
                 {
-                    // Store the event in Redis
-                    db.StringSet(eventKey, "");
-
                     // Send the message
                     string message = JsonConvert.SerializeObject(eventItem);
                     await messageSender.SendMessageAsync(topic, message);
                     eventCount++;
+
+                    // Store the event in Redis
+                    db.StringSet(eventKey, "");
                 }
             }
 
