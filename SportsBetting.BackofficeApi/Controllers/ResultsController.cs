@@ -10,15 +10,19 @@ namespace SportsBetting.Controllers
     {
         private readonly IResultService _resultService;
 
-        public ResultsController(IResultService resultService)
+        private readonly ILogger<ResultsController> _logger;
+
+        public ResultsController(IResultService resultService, ILogger<ResultsController> logger)
         {
             _resultService = resultService;
+            _logger = logger;
         }
 
         // POST: api/Results
         [HttpPost]
         public async Task<ActionResult<Result>> PostResult(Result result)
         {
+            _logger.LogInformation("Testing logger");
             try
             {
                 await _resultService.CreateResultAsync(result);
