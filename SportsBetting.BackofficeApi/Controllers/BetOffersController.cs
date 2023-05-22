@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsBetting.Data.Models;
 using SportsBetting.Data.Repositories.Interfaces;
 using SportsBetting.Services.Services.Interfaces;
@@ -6,6 +7,7 @@ namespace SportsBetting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BetOffersController : ControllerBase
     {
         private readonly IBetOfferService _betOfferService;
