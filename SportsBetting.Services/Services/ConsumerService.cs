@@ -30,7 +30,7 @@ namespace SportsBetting.Services.Services
             {
                 try
                 {
-                    _logger.LogInformation($"starts");
+                    _logger.LogInformation($"Starts consuming messages");
                     var cr = _consumer.Consume(cancellationToken);
                     _logger.LogInformation($"Consumed message '{cr.Message.Value}' at: '{cr.TopicPartitionOffset}'.");
 
