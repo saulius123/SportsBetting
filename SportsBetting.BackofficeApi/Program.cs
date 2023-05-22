@@ -19,7 +19,8 @@ public class Program
         
         builder.Services.AddControllers();
         builder.Services.AddDbContext<SportsBettingContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("Database")
+            builder.Configuration.GetConnectionString("Database"),
+            x => x.MigrationsAssembly("SportsBetting.BackofficeApi")
         ));
 
         builder.Services.AddScoped<IEventRepository, EventRepository>();
